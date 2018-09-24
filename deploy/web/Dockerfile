@@ -21,8 +21,8 @@ COPY . /app
 # Expose your service port
 EXPOSE 1234
 
-# Add all bin to PATH
-ENV PATH "$PATH:/app/bin"
+# Add all web to PATH
+ENV PATH "$PATH:/app/web"
 
 # Set your entrypoint here just to start the webserver such as puma
 ENTRYPOINT ["web"]
