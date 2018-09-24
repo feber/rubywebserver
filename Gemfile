@@ -2,10 +2,11 @@
 
 source 'https://rubygems.org'
 
-gem 'ruby_gem_crud', git: 'https://github.com/feber/rubygemcrud', branch: 'gem'
+gem 'ruby_gem_crud', git: 'https://github.com/feber/rubygemcrud', branch: 'gem', :name => 'ruby_gem_crud'
 gem 'rack'
 gem 'sinatra'
 gem 'sqlite3'
+gem 'rubocop'
 
 group :development do
   gem 'pry'
@@ -15,7 +16,6 @@ group :development do
 end
 
 group :test do
-  gem 'rack-test'
   gem 'rspec'
   gem 'simplecov'
   gem 'webmock'

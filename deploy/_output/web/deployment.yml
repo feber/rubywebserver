@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    release: 'ccc0851'
+  name: rubywebserver-web-sandbox
+  namespace: default
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      annotations:
+        release: 'ccc0851'
+      labels:
+        project: rubywebserver
+        service: web
+        env: sandbox
+    spec:
+      imagePullSecrets:
+      - name: blregistry
+      containers:
+      - name: rubywebserver-web
+        image: registry.bukalapak.io/bukalapak/rubywebserver/web:ccc0851
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 1234
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 1234
+          initialDelaySeconds: 30
+          timeoutSeconds: 1
+        ports:
+        - containerPort: 1234
+        resources:
+          limits:
+            memory: 0.1Gi
+            cpu: 1
+          requests:
+            memory: 0.1Gi
+            cpu: 1
+        command:
+        - web
+

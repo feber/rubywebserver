@@ -2,7 +2,7 @@ templateVersion: v2.2.1
 projectName: rubywebserver
 services:
 - name: web
-  port: "4567"
+  port: "1234"
   environments:
   - name: production
     replica: "1"
@@ -10,11 +10,11 @@ services:
     replica: "1"
   - name: staging
     replica: "1"
-  nodePort: "34567"
+  nodePort: "31234"
   healthz: healthz
-  maxMem: "0.5"
+  maxMem: "0.1"
   maxCpu: "1"
-  minMem: "0.2"
+  minMem: "0.1"
   minCpu: "1"
   limit: false
   timeout: "1"

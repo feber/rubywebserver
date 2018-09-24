@@ -11,16 +11,15 @@ WORKDIR /app
 # Install all the dependency
 COPY --from=builder /usr/local/bin/envconsul /usr/local/bin/
 COPY Gemfile Gemfile.lock /app/
-RUN apk --update add --no-cache --virtual .build_deps something &&\
-    apk --update add --no-cache --virtual .run_deps something &&\
-    bundle install --deployment &&\
-    apk del .build_deps
+RUN apk update && apk upgrade && apk add --no-cache git \
+    && apk add --no-cache --virtual sqlite-dev sqlite3-dev \
+    && apk add --no-cache --virtual build-base build-dependencies
 
 # Add service
 COPY . /app
 
 # Expose your service port
-EXPOSE 4567
+EXPOSE 1234
 
 # Add all bin to PATH
 ENV PATH "$PATH:/app/bin"

@@ -17,4 +17,3 @@ desc 'Lint code'
 RuboCop::RakeTask.new
 
 Bundler::GemHelper.install_tasks
-
