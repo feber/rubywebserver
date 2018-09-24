@@ -1,0 +1,90 @@
+GIT
+  remote: https://github.com/feber/rubygemcrud
+  revision: cf4f2598861e3f1bca5306baf7aae84062d9f671
+  branch: gem
+  specs:
+    ruby_gem_crud (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.5.2)
+      public_suffix (>= 2.0.2, < 4.0)
+    coderay (1.1.2)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
+    daemons (1.2.6)
+    diff-lcs (1.3)
+    docile (1.3.1)
+    eventmachine (1.2.7)
+    foreman (0.85.0)
+      thor (~> 0.19.1)
+    hashdiff (0.3.7)
+    json (2.1.0)
+    method_source (0.9.0)
+    mustermann (1.0.3)
+    pry (0.11.3)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+    public_suffix (3.0.3)
+    rack (2.0.5)
+    rack-protection (2.0.4)
+      rack
+    rack-test (1.1.0)
+      rack (>= 1.0, < 3)
+    rake (12.3.1)
+    rspec (3.8.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
+    safe_yaml (1.0.4)
+    simplecov (0.16.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
+    sinatra (2.0.4)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.4)
+      tilt (~> 2.0)
+    sqlite3 (1.3.13)
+    thin (1.7.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
+    thor (0.19.4)
+    tilt (2.0.8)
+    webmock (3.4.2)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  foreman
+  pry
+  rack
+  rack-test
+  rake
+  rspec
+  ruby_gem_crud!
+  simplecov
+  sinatra
+  sqlite3
+  thin
+  webmock
+
+BUNDLED WITH
+   1.16.4
