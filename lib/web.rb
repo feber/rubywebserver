@@ -68,6 +68,8 @@ class Web < Sinatra::Base
         message = 'fail'
         tags = ['RubyGemCrud::Service.find_book_by_id', 'asset', 'user_id']
         logger.error(request_id, message, tags, duration.to_i)
+
+        status 400
       end
 
       book.to_json
@@ -85,6 +87,8 @@ class Web < Sinatra::Base
         message = 'fail'
         tags = ['RubyGemCrud::Service.find_book_by_id', 'asset', 'user_id']
         logger.error(request_id, message, tags, duration.to_i)
+
+        status 400
       end
       book.to_json
     end
