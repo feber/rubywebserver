@@ -1,3 +1,6 @@
+# project deploy/_output
+deploy/_output
+
 *.gem
 *.rbc
 /.config
