@@ -1,10 +1,22 @@
-require 'sinatra/base'
 require 'json'
 require 'ruby_gem_crud'
+require 'sinatra/base'
+require 'sinatoring'
+require 'sinatoring/instrument'
+require 'sinatoring/log'
+require 'prometheus/middleware/collector'
+require 'prometheus/middleware/exporter'
+require 'uuid4r'
 
 class Web < Sinatra::Base
+  use Prometheus::Middleware::Collector
+  use Prometheus::Middleware::Exporter
+
   def initialize(dbfile)
-    @service = RubyGemCrud.connect(dbfile)
+    srv = RubyGemCrud.connect(dbfile)
+    # decorator records all service methods for /metrics
+    @service = Sinatoring::Decorator::Metrics.new(srv)
+    Sinatoring::Instrument.init!
     super
   end
 
@@ -24,8 +36,9 @@ class Web < Sinatra::Base
   end
 
   get '/books' do
+    # get context value from request headers
+    ctx = Sinatoring.get_request_context(request)
     books = @service.all_books
-    res = []
     wrap_response do
       map_to_json(books)
     end
@@ -43,7 +56,20 @@ class Web < Sinatra::Base
 
   get '/books/:id' do
     wrap_response do
+      start_time = Time.now
+      # TODO: https://apidock.com/ruby/Time/to_f
       book = @service.find_book_by_id(params['id'].to_i)
+      duration = ((Time.now.to_f - start_time.to_f) * 1000)
+      puts duration.to_f
+
+      if book.nil?
+        logger = Sinatoring::Log.new
+        request_id = UUID4R::uuid_v4
+        message = 'fail'
+        tags = ['RubyGemCrud::Service.find_book_by_id', 'asset', 'user_id']
+        logger.error(request_id, message, tags, duration.to_i)
+      end
+
       book.to_json
     end
   end
@@ -53,6 +79,13 @@ class Web < Sinatra::Base
 
     wrap_response do
       book = @service.update_book(params['title'], params['category'], params['id'].to_i)
+      if book.nil?
+        logger = Sinatoring::Log.new
+        request_id = UUID4R::uuid_v4
+        message = 'fail'
+        tags = ['RubyGemCrud::Service.find_book_by_id', 'asset', 'user_id']
+        logger.error(request_id, message, tags, duration.to_i)
+      end
       book.to_json
     end
   end

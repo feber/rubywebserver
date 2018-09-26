@@ -7,6 +7,10 @@ gem 'rack'
 gem 'sinatra'
 gem 'sqlite3'
 gem 'rubocop'
+gem 'puma'
+gem 'sinatoring'
+gem 'prometheus'
+gem 'uuid4r'
 
 group :development do
   gem 'pry'
