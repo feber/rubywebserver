@@ -8,10 +8,15 @@ require 'prometheus/middleware/collector'
 require 'prometheus/middleware/exporter'
 require 'uuid4r'
 
+# Web maps each HTTP API call with logical method.
 class Web < Sinatra::Base
   use Prometheus::Middleware::Collector
   use Prometheus::Middleware::Exporter
 
+  # Initialize database service which is used in this class.
+  # Decorates the service with metrics decorator from Sinatoring
+  # 
+  # @param [String] dbfile: database filename
   def initialize(dbfile)
     srv = RubyGemCrud.connect(dbfile)
     # decorator records all service methods for /metrics
@@ -20,7 +25,7 @@ class Web < Sinatra::Base
     super
   end
 
-  # set content type
+  # Set content type to json before each request
   before do
     content_type :json
   end
@@ -31,10 +36,14 @@ class Web < Sinatra::Base
       'ok'
     else
       status 500
-      'I\'m not okay :/'
+      'Not ok'
     end
   end
 
+  # GET all available books
+  # 
+  # @return [Array(Book)] when the table is not empty,
+  #      or [nil] otherwise
   get '/books' do
     # get context value from request headers
     ctx = Sinatoring.get_request_context(request)
@@ -44,6 +53,10 @@ class Web < Sinatra::Base
     end
   end
 
+  # POST a new book
+  # 
+  # @return [Book] when the insert operation was success,
+  #      or [nil] otherwise
   post '/books' do
     request.body.rewind
 
@@ -54,6 +67,12 @@ class Web < Sinatra::Base
     end
   end
 
+  # GET a book determined by ID.
+  # Error log will be written
+  # if the book can't be found inside database.
+  # 
+  # @return [Book] when the record can be found,
+  #      or [nil] otherwise.
   get '/books/:id' do
     wrap_response do
       start_time = Time.now
@@ -76,6 +95,12 @@ class Web < Sinatra::Base
     end
   end
 
+  # POST updates a book determined by ID
+  # Error log will be written
+  # if the update operation failed.
+  # 
+  # @return [Book] when update operation success,
+  #      or [nil] otherwise.
   post '/books/:id' do
     request.body.rewind
 
@@ -94,6 +119,7 @@ class Web < Sinatra::Base
     end
   end
 
+  # DELETE deletes a book determined by ID
   delete '/books/:id' do
     request.body.rewind
 
