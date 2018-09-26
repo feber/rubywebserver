@@ -21,6 +21,11 @@ dep:
 $(ODIR):
 	@mkdir -p $(ODIR)
 
+consul: $(ODIR)
+	@wget https://releases.hashicorp.com/envconsul/0.6.2/envconsul_0.6.2_linux_amd64.tgz
+	@tar -xf envconsul_0.6.2_linux_amd64.tgz -C $(ODIR)/
+	@rm envconsul_0.6.2_linux_amd64.tgz
+
 build:
 	@$(foreach svc, $(VAR_SERVICES), \
 		docker build -t $(IMAGE):$(VERSION) -f ./deploy/$(svc)/Dockerfile .;)
