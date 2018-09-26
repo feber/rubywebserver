@@ -9,11 +9,17 @@ FROM ruby:2.4.2-alpine3.6
 WORKDIR /app
 
 # Install all the dependency
-COPY --from=builder /usr/local/bin/envconsul /usr/local/bin/
+# COPY --from=builder /usr/local/bin/envconsul /usr/local/bin/
+# COPY Gemfile Gemfile.lock /app/
+
+# Install all the dependency
+COPY deploy/_output/envconsul /bin/envconsul
 COPY Gemfile Gemfile.lock /app/
 RUN apk update && apk upgrade && apk add --no-cache git \
     && apk add --no-cache --virtual sqlite-dev sqlite3-dev \
-    && apk add --no-cache --virtual build-base build-dependencies
+    && apk add --no-cache --virtual build-base build-dependencies \
+    && apk add --update --no-cache --virtual .build_deps \
+    && bundle install --deployment
 
 # Add service
 COPY . /app
@@ -21,8 +27,8 @@ COPY . /app
 # Expose your service port
 EXPOSE 1234
 
-# Add all web to PATH
-ENV PATH "$PATH:/app/web"
+# Add all bin to PATH
+ENV PATH "$PATH:/app/bin"
 
 # Set your entrypoint here just to start the webserver such as puma
-ENTRYPOINT ["web"]
+ENTRYPOINT ["bundle", "exec", "puma", "-p", "1234", "app/web/config.ru"]
