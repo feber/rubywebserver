@@ -1,0 +1,20 @@
+@startuml
+' This diagram created with PlantUML
+' To generate this diagram, copy the whole content
+' to plantuml.com/plantuml
+
+
+cloud Users
+agent RubyWebServer
+agent CrudLibrary
+database SQLite
+
+SQLite -->> CrudLibrary : result
+CrudLibrary -->> SQLite : query
+
+RubyWebServer -->> CrudLibrary : service call
+CrudLibrary -->> RubyWebServer : service result
+
+RubyWebServer -->> Users : json response
+Users -->> RubyWebServer : http request
+@enduml

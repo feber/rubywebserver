@@ -136,9 +136,7 @@ The web server provide a set of endpoints with different functions.
 * Mean Response Time: < 100 ms
 
 ## Architecture Diagram
-```
-? <==> ?
-```
+![Architecture diagram](doc/diagram.png)
 
 ## Owner
 SRE (sre@bukalapak.com)
